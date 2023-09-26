@@ -39,6 +39,9 @@ const delayList = [
 
 const outputList = document.getElementById("output");
 const generateButton = document.getElementById("generateButton");
+const toggleModeButton = document.getElementById("toggleModeButton");
+
+let isDarkMode = false;
 
 function getRandomElement(arr) {
 	const randomIndex = Math.floor(Math.random() * arr.length);
@@ -49,7 +52,7 @@ generateButton.addEventListener("click", function () {
 	const intro = getRandomElement(introList);
 	const scape = getRandomElement(scapeList);
 	const delay = getRandomElement(delayList);
-	const output = `${intro} ${scape} ${delay}`;
+	const output = `[${intro}] [${scape}] [${delay}]`;
 
 	const listItem = document.createElement("li");
 	listItem.textContent = output;
@@ -57,3 +60,17 @@ generateButton.addEventListener("click", function () {
 	// Add the newest generation at the beginning of the list
 	outputList.insertBefore(listItem, outputList.firstChild);
 });
+
+toggleModeButton.addEventListener("click", function () {
+	isDarkMode = !isDarkMode;
+	document.body.classList.toggle("dark-mode", isDarkMode);
+	toggleModeButton.textContent = isDarkMode ? "Light Mode" : "Dark Mode";
+});
+
+// Check if the user has a preference for dark mode
+const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+if (prefersDarkMode.matches) {
+	isDarkMode = true;
+	document.body.classList.add("dark-mode");
+	toggleModeButton.textContent = "Light Mode";
+}
